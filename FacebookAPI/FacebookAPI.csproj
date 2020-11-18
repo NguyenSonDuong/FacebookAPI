@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\Pictures\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="xNet">
+      <HintPath>..\..\..\..\Pictures\xNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
