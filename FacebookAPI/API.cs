@@ -6,6 +6,7 @@ namespace FacebookAPI
     public class API
     {
         public static String HOST_FACEBOOK = "https://graph.facebook.com/v8.0/";
+        public static String CONTENT_TYPE_URLENCODED = "application/x-www-form-urlencoded";
         public static HttpRequest GetRequest(String cookie, String user_agent ="", String token_header="")
         {
             HttpRequest http = new HttpRequest();

@@ -10,6 +10,7 @@ namespace FacebookAPI
         private string accesstoken;
         private string cookie;
         private String fb_dtsg = "";
+        private String id;
         private static string HOST_FACEBOOK = "https://www.facebook.com/api/graphql/";
         private static string URL_GET_COOKIE = "https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed";
 
@@ -49,6 +50,8 @@ namespace FacebookAPI
                 fb_dtsg = value;
             }
         }
+        public string Id { get => id; set => id = value; }
+
         public GraphAPIFacebook()
         {
 
@@ -62,7 +65,6 @@ namespace FacebookAPI
             this.cookie = cookie;
             this.fb_dtsg = fb_dtsg;
         }
-
         public static GraphAPIFacebook Build(String cookie, String user_agent)
         {
             try
@@ -71,6 +73,7 @@ namespace FacebookAPI
                 GraphAPIFacebook graphAPIFacebook = new GraphAPIFacebook();
                 graphAPIFacebook.accesstoken = GetTokenFromContent(dataRequest);
                 graphAPIFacebook.fb_dtsg = GetFbDtsgFromContent(dataRequest);
+                graphAPIFacebook.Id = GetIDFromCookie(cookie);
                 return graphAPIFacebook;
             }
             catch (Exception exx)
@@ -113,6 +116,21 @@ namespace FacebookAPI
         {
             return HOST_FACEBOOK + para + "&access_token=" + Accesstoken;
         }
+        public static String GetIDFromCookie(string cookie)
+        {
+            var temp = cookie.Split(';');
+            foreach (var item in temp)
+            {
+                var temp2 = item.Trim().Split('=');
+                if (temp2.Length > 1)
+                {
+                    if (temp2[0].Trim().Equals("c_user"))
+                        return temp2[1];
+
+                }
+            }
+            return "";
+        }
         public String RequestGet(String para, String user_agent)
         {
             try
@@ -124,8 +142,19 @@ namespace FacebookAPI
                 throw ex;
             }
         }
-        public String RequestPost(String para, Object data, String user_agent)
+        public String RequestPost(String para, String data,String content_type ,String user_agent = "")
         {
+            try
+            {
+                String url = HOST_FACEBOOK;
+                if (String.IsNullOrEmpty(para))
+                    url = GetUrl(para);
+                String json = API.POST(url, data, content_type, cookie);
+                return json;
+            }catch(Exception ex)
+            {
+                throw ex;
+            }
             return "";
         }
     }
